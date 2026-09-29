@@ -1,0 +1,66 @@
+@model IEnumerable<ProductListProject.Models.Product>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <title>Danh sách sản phẩm - Quang Huy</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 40px; background-color: #f4f7f6; }
+        h2 { color: #2c3e50; text-align: center; margin-bottom: 30px; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #007bff; color: white; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        tr:hover { background-color: #f1f1f1; }
+        .error { color: red; font-weight: bold; margin-bottom: 15px; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Danh sách sản phẩm</h2>
+        
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <div class="error">
+                <p>⚠️ @ViewBag.ErrorMessage</p>
+                <p>Hãy chắc chắn bạn đã chạy script file Database.sql trong SQL Server và sửa lại chuỗi kết nối trong appsettings.json cho khớp với máy của bạn!</p>
+            </div>
+        }
+
+        <!-- Tạo danh sách các sản phẩm và hiển thị dưới dạng bảng HTML (4đ) -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Giá (VNĐ)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.Name</td>
+                            <td>@string.Format("{0:N0} VNĐ", item.Price)</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="3" style="text-align:center; color:#666;">Chưa có dữ liệu sản phẩm trong Database.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
